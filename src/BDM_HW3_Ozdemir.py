@@ -6,22 +6,18 @@ sc = SparkContext()
 spark = SparkSession(sc)
 sc
 
-
-
 def extractdata(proid, records):
     if proid==0:
         next(records)
-#     for row in records:
-#         yield (row)
+
     import csv
     reader = csv.reader(records)
     for row in reader:
         if len(row)==18:
-#         if row[0]!='s': # to filter our bad-quality data
             (date,prod,company) = (row[0][:4], row[1].lower(), row[7].lower())
             yield ((prod, date, company), 1)
             
-def towrite (_,rows):
+def towrite(_,rows):
     for (year, prod), (t_complaint, t_company, max_percent) in rows:
         if ',' in prod:
             prod='"{}"'.format(prod)
